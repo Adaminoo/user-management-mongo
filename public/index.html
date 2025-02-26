@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="bottom">
+        <div class="app">
+            <h1>User Management</h1>
+            <div class="buttons">
+                <button class="editbutton" onclick="newUser()">Create</button>
+                <button class="editbutton" onclick="editUser()">Edit</button>
+                <button class="editbutton" onclick="deleteUser()">Delete</button>
+                <form class="editbutton" action="/users" method='GET'>
+                    <input type="submit">
+                </form>
+            </div>
+            <div class="list">
+                <ul>
+                    <li id="le">asdf</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

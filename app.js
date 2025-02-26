@@ -1,11 +1,14 @@
-const express = require('express');
+const express = require("express");
+
+// const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use(express.static('public'));
 
 const mongoose = require('mongoose');
-const db_uri = process.env.DB_URI || 'mongodb://localhost:27017/demo';
+const db_uri = process.env.DB_URI || 'mongodb://localhost:27017/test';
 mongoose.connect(db_uri);
 const db = mongoose.connection;
 
@@ -46,6 +49,12 @@ app.post('/newUser', (req, res) => {
         res.send(`done ${data}`)
     })
 });
+
+function newUser() {
+    document.getElementById('le').innerHTML = 'hello'
+}
+
+
 
 // app.post('/users', async (req, res) => {
 //     const name = req.body.name;
