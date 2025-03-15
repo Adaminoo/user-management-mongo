@@ -7,22 +7,29 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js" defer></script>
 </head>
-<body>
+<body onload="render()">
+    
     <div class="bottom">
-        <div class="app">
-            <h1>User Management</h1>
-            <div class="buttons">
-                <button class="editbutton" onclick="newUser()">Create</button>
-                <button class="editbutton" onclick="editUser()">Edit</button>
-                <button class="editbutton" onclick="deleteUser()">Delete</button>
-                <form class="editbutton" action="/users" method='GET'>
-                    <input type="submit">
-                </form>
+        <h1 class="title">User Management</h1>
+        <div id="app" class="app">
+            <div id="buttons">
             </div>
             <div class="list">
-                <ul>
-                    <li id="le">asdf</li>
-                </ul>
+                <button type="button" class="collapsible">New User</button>
+                <div class="content">
+                    <div id="editor">
+                        <div>User Information:</div>
+                        <input class="newUserInput" id="firstNameInput" placeholder="Enter First Name...">
+                        <input class="newUserInput" id="lastNameInput" placeholder="Enter Last Name...">
+                        <input class="newUserInput" id="emailInput" placeholder="Enter Email...">
+                        <input class="newUserInput" id="ageInput" placeholder="Enter Age...">
+                        <button onclick="addUser()" id="addButton">add</button>
+                        <button onclick="updateUser()">update</button>
+                    </div>
+                </div>
+                <h2 class="title">Users</h2>
+                
+                <ul id="userList"></ul>
             </div>
         </div>
     </div>

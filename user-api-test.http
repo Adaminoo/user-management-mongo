@@ -1,10 +1,26 @@
+
 POST http://localhost:3000/users HTTP/1.1
 Content-Type: application/json
 
 {
-  "name": "Jack",
-  "role": "admin",
-  "age": 22
+    "firstName": "Adam",
+    "lastName": "Brunner",
+    "email": "test@gmail.com",
+    "age": 23
 }
 
+###
+
 GET http://localhost:3000/users
+
+###
+
+PUT http://localhost:3000/users/Adam
+Content-Type: application/json
+
+{
+    "firstName": "Adam",
+    "lastName": "Brunner",
+    "email": "test@gmail.com",
+    "age": 23
+}

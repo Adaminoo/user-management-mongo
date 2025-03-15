@@ -1,6 +1,4 @@
 const express = require("express");
-
-// const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -19,61 +17,73 @@ db.once('open', () => {
     console.log('Database connected');
 })
 
-const User = mongoose.Schema({
+
+
+const UserSchema = mongoose.Schema({
     firstName: String,
     lastName: String,
     email: String,
     age: Number,
     createdDate: { type: Date, default: Date.now }
-});
+})
 
-const UserModel = mongoose.model('User', User);
+const UserModel = mongoose.model('User', UserSchema, 'users');
 
 app.listen(port, (err) => {
     if (err) console.log(err);
     console.log(`App Server listening on port ${port}`)
 })
 
-app.post('/newUser', (req, res) => {
+
+// New User
+app.post('/users', async function(req, res) {
     console.log(`POST /newUser: ${JSON.stringify(req.body)}`);
-    const newUser = new User();
-    newUser.firstName = req.body.firstName;
-    newUser.lastName = req.body.lastName;
-    newUser.email = req.body.email;
-    newUser.age = req.body.age;
-    newUser.save((err, data) => {
-        if (err) {
-            return console.error(err);
-        }
-        console.log(`new user save: ${data}`);
-        res.send(`done ${data}`)
-    })
+    console.log(req);
+    let user = new UserModel({ firstName: req.body.firstName, lastName: req.body.lastName, email: req.body.email, age: req.body.age})
+    try {
+        console.log(user)
+        const result = await user.save();
+        res.send(result)
+    } catch (err) {
+        console.log(err)
+    }
 });
 
-function newUser() {
-    document.getElementById('le').innerHTML = 'hello'
-}
+// Listing all users
+app.get('/users', async (req, res) => {
+    try {
+        const users = await UserModel.find();
+        res.json(users);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+})
 
+// Deleting a user (WIP)
+app.delete('/deleteUser/:firstName', async (req, res) => {
+    const name = req.params.firstName;
+    try {
+        const user = await UserModel.findOneAndDelete({ firstName: name });
+        res.send(user);
+    } catch (err) {
+        res.status(500).send(err);
+    }
+})
 
+// Updating an existing user
+app.put('/users/:firstName', async (req, res) => {
+    try {
+        const firstName = req.params.firstName;
+        const updatedUser = req.body;
 
-// app.post('/users', async (req, res) => {
-//     const name = req.body.name;
-//     const role = req.body.role;
-//     const age = req.body.age;
-//     try {
-//         const user = new UserModel({ name, role, age });
-//         const result = await user.save();
-//         res.send(result);
-//     } catch (err) {
-//         res.status(500).send(err);
-//      }
-    
-//     const user = new UserModel(req.body);
-    
-//     try {
-//         const result = await user.save();
-//         res.send(result);
-//     } catch (err) {
-//         res.status(500).send
-//     }
-// })
+        const user = await UserModel.findOneAndUpdate({ firstName: firstName }, updatedUser, { new: true });
+        if (!user) {
+            return res.status(404).send({ message: 'User not found' });
+        }
+        console.log(user)
+        res.send(user);
+    } catch (err) {
+        console.log(err);
+        res.status(500).send({ message: 'Error updating user' });
+    }
+})
